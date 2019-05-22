@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+   webserver:
+      build:
+         context: ./
+      image:  ${APP}-dev
+      volumes:
+         - ./build/libs:/app
+      environment:
+         - JAR_NAME=${JAR_NAME}
+      ports:
+         - '8080:${APP_PORT}'
+         - '8000:${DEBUG_PORT}'
+      command: java -Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=0.0.0.0:8000,suspend=n -Dspring.devtools.add-properties=true -jar ${JAR_NAME}
+      restart: always
